@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Preview | Dynamic Form Builder </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/lib/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+  <script data-main="assets/js/main-built.js" src="assets/js/lib/require.js"></script>
+  <script src="assets/js/lib/jquery.js"></script>
+</head>
+
+<body>
+  <div class="navbar navbar-inverse" style="margin-top:-60px">
+    <div class="navbar-inner">
+      <a class="brand" href="index.html">Dynamic Form</a>
+      <ul class="nav pull-right">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="admin.html">Admin</a></li>
+        <li><a href="preview.html">Preview</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row clearfix">
+      <!-- Building Form. -->
+      <div class="col-md-3 span3">
+        <div class="clearfix">
+          <h4>Available Forms</h2>
+            <div id="divLIstAvailableForms" class="well">
+            </div>
+        </div>
+      </div>
+      <!-- / Building Form. -->
+
+      <!-- Building Form. -->
+      <div class="col-md-9 span9">
+        <div class="clearfix">
+          <h4>Preview</h2>
+            <div id="divShowFormData" class="well">
+            </div>
+        </div>
+      </div>
+      <!-- / Building Form. -->
+    </div>
+    <div class="row clearfix" id="divPreviewData">
+    </div>
+  </div>
+  <!-- /container -->
+  <script>
+    (function () {
+      let keysList = Object.keys(localStorage),
+        anchor = ""
+      keysList.forEach(function (dta) {
+        let function_name = "myFunction('" + dta + "')"
+        anchor = anchor + '<button type="button" onclick="' + function_name + '" class="btn btn-link">' + dta + '</button> <br/>';
+      });
+      document.getElementById('divLIstAvailableForms').innerHTML = anchor;
+    })();
+    function myFunction(_dta) {
+      document.getElementById('divShowFormData').innerHTML = localStorage.getItem(_dta);
+      $("#formSubmit").click(function (event) {
+        event.preventDefault();
+        setTimeout(function () {
+          $("#divPreviewData").empty();
+          var search = $(".form-horizontal").serialize();
+          let data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) });
+          $("#divPreviewData").append("<b>" + JSON.stringify(data) + "</b>");
+        }, 100);
+      });
+    }
+  </script>
+</body>
+
+</html>

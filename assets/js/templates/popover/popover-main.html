@@ -1,0 +1,25 @@
+<form class='form'>
+  <div class='controls'>
+    <% var compiled =  _.reduce(items, function(str, v, k){ %>
+      <% v["name"] = k; %>
+      <% return str + popoverTemplates[v["type"]](v); %>
+    <% }, "") %>
+    <%= compiled %>
+    <hr/>
+    <button id="save" class='btn btn-info'>Save</button><button id="cancel" class='btn btn-danger'>Cancel</button>
+  </div>
+</form>
+<script>
+   $("#id").addClass('hide');
+   $("#id").prev("label").hide();
+   $("#helptext").addClass('hide');
+   $("#helptext").prev("label").hide();
+  $('#save').click(function(event){
+    const label = ($("#name").prev("label").length>0) ? $("#name").prev("label")[0].innerText : null;
+    if(label!="Form Name"){
+      event.preventDefault();
+      $("#id").val($("#label").val().toLowerCase().replace(/\s/g, ''));
+    }
+  })
+
+</script>
